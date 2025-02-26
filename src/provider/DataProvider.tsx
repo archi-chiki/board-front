@@ -1,22 +1,16 @@
-import { create } from "domain";
-import React, { createContext, useState, useEffect, useContext, PropsWithChildren } from "react";
-
-interface DataItem {
-  readonly id: number;
-  readonly subject: string;
-  readonly createdAt: string;
-  readonly content: string;
-  readonly author: {
-    name: string;
-  };
-}
+import { Post } from "../components/board/BoardContent";
+import React, {
+  createContext,
+  useState,
+  SetStateAction,
+  useContext,
+  Dispatch,
+  PropsWithChildren,
+} from "react";
 
 interface DataContextValue {
-  readonly data: DataItem[];
-  // readonly loading: boolean;
-  // readonly error: boolean;
-  // readonly setLoading: (value: boolean) => void;
-  // readonly setError: (value: boolean) => void;
+  readonly data: Post[];
+  setData: Dispatch<SetStateAction<Post[]>>;
 }
 
 // 초기값 설정(이게 맞는건지..?)
@@ -26,31 +20,9 @@ interface DataContextValue {
 const DataContext = createContext<DataContextValue | undefined>(undefined);
 
 export const DataProvider = ({ children }: PropsWithChildren) => {
-  const [data, setData] = useState<DataItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
+  const [data, setData] = useState<Post[]>([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:9000/board");
-      if (!response.ok) {
-        throw new Error("데이터 요청 실패");
-      }
-      const result: DataItem[] = await response.json();
-      setData(result);
-    } catch (err: any) {
-      console.log(err);
-    } finally {
-      console.log("끄읏..");
-    }
-  };
-
-  // 컴포넌트 마운트 시 데이터 가져오기
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return <DataContext.Provider value={{ data }}>{children}</DataContext.Provider>;
+  return <DataContext.Provider value={{ data, setData }}>{children}</DataContext.Provider>;
 };
 
 // Context를 사용하는 커스텀 훅

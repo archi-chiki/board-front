@@ -7,11 +7,12 @@ export interface Post {
     name: string;
   };
   readonly createdAt: string;
+  readonly content: string;
   views?: number;
   likes?: number;
 }
 
-interface PostContentProps {
+export interface PostContentProps {
   post: Post;
 }
 
@@ -21,7 +22,8 @@ const PostContent: React.FC<PostContentProps> = ({ post }) => {
   return (
     <tr
       onClick={(e) => {
-        navigate(`/board/${post.id}`);
+        // 경로 추적
+        navigate(`/board/${post.id}`, { state: { from: "board" } });
       }}
       style={{
         cursor: "pointer",

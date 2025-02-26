@@ -3,49 +3,47 @@ import PostContent from "../components/board/BoardContent";
 import "../styles/board.css";
 import "../styles/common.css";
 import { useEffect, useState } from "react";
-
-interface Props {
-  id: number;
-  subject: string;
-  createdAt: string;
-  content: string;
-  author: {
-    name: string;
-  };
-}
+import { useData } from "../provider/DataProvider";
+import apiClient from "../utils/axios-instance";
 
 const BoardPage = () => {
   // TODO: Context API
-  const [posts, setPosts] = useState<ReadonlyArray<Props>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://localhost:9000/board", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error("실패" + response.status);
-      }
-
-      const resData = await response.json();
-      setPosts(resData);
-    } catch (error) {
-      if (error) {
-        setError(true);
-      } else {
-        throw error;
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, setData } = useData(); // 얘는 왜 객체로만 선언되지?
 
   useEffect(() => {
+    setLoading(true);
+
+    const fetchData = async () => {
+      try {
+        const response = await apiClient.get("/board");
+
+        // 데이터 확인
+        console.log(response);
+        setData(response.data);
+      } catch (error) {
+        if (error) {
+          setError(true);
+        } else {
+          throw error;
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, []);
+
+  if (loading === true) {
+    console.log("로딩 State가 랜더링 됨");
+    return <div>데이터 로딩중...</div>;
+  }
+
+  if (error === true) {
+    return <div>데이터 로딩중 문제가 발생되었음...</div>;
+  }
 
   return (
     <div>
@@ -69,8 +67,7 @@ const BoardPage = () => {
             </tr>
           </thead>
           <tbody>
-            {posts.map((post) => (
-              // <PostContent key={post} post={post} />
+            {data.map((post) => (
               <PostContent key={post.id} post={post} />
             ))}
           </tbody>
