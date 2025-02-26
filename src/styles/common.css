@@ -1,0 +1,19 @@
+.function-btn {
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.write {
+  background-color: #007bff;
+}
+
+.modify {
+  background-color: #f6d52e;
+}
+
+.delete {
+  background-color: #eb0000;
+}

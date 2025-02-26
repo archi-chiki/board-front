@@ -1,0 +1,31 @@
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.board-table th,
+.board-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.board-table th {
+  background-color: #f4f4f4;
+}
+
+.board-table a {
+  color: #008cba;
+  text-decoration: none;
+}
+
+.board-table a:hover {
+  text-decoration: underline;
+}
