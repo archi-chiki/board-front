@@ -1,46 +1,24 @@
-# Getting Started with Create React App
+## 2025. 02. 27 홈웕크
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 1. 커스텀 훅으로 boardFetch()와 useBoardFetch()를 선언한 뒤 컴포넌트에서 사용했을 때 발생되는 문제점을 파악하시오
 
-## Available Scripts
+- 우선 아래와 같은 에러 메시지가 발생되었습니다 선생님...ㅠ
+- 우선 "React Hook은 'use'라는 키워드로 시작되어야 한다"는 내용의 런타임 에러가 발생된다.
+- 하지만,, 웹 브라우저의 콘솔로그를 확인해보았을 때, 실질적으로 데이터를 가져오는 기능을 수행하고 있는 것으로 파악되었읍니다..(API 호출 자체가 불가해야 하는게 맞겠지요..?)
 
-In the project directory, you can run:
+```tsx
+React Hook "useState" is called in function "boardFetch" that is
+neither a React function component nor a custom React Hook
+function. React component names must start with an uppercase
+letter. React Hook names must start with the word "use".
+```
 
-### `npm start`
+### 2. JSX(TSX) 파일이 아닌데도 React의 훅을 사용할 수 있는 이유
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- JSX(TSX) 확장자는 JS(TS) 안에 HTML 태그를 함께 사용할 수 있도록 문법을 지원한다는 특징이 존재하며, 어떤 확장자를 사용하더라도 컴파일 하게되면 결과적으로 모두 동일한 JS를 반환하기 때문이다.
+- React 훅 역시, JS에 함수로 정의되어 있는 존재이기 때문에 파일 확장자와 관계없이 모두 import하여 사용할 수 있는 것이다.
+- 잘 이해한게 맞는걸까요 선생님..?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 3. useCallBack()을 활용한 함수 메모이제이션 활용
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 선생님,, 죄송합니다.. 함수 메모이제이션을 어디서 사용해야할지 감이오지 않습니다..

@@ -2,42 +2,14 @@ import { Link } from "react-router-dom";
 import PostContent from "../components/board/BoardContent";
 import "../styles/board.css";
 import "../styles/common.css";
-import { useEffect, useState } from "react";
-import { useData } from "../provider/DataProvider";
-import apiClient from "../utils/axios-instance";
+import { useBoradFetch } from "../hooks/boardFetch";
 
 const BoardPage = () => {
-  // TODO: Context API
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
-  const { data, setData } = useData(); // 얘는 왜 객체로만 선언되지?
-
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async () => {
-      try {
-        const response = await apiClient.get("/board");
-
-        // 데이터 확인
-        console.log(response);
-        setData(response.data);
-      } catch (error) {
-        if (error) {
-          setError(true);
-        } else {
-          throw error;
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  // 로딩, 에러 상태도 커스텀 훅에서 일괄적으로 관리하는게 바람직한지..?
+  const { data, loading, error } = useBoradFetch("board");
 
   if (loading === true) {
-    console.log("로딩 State가 랜더링 됨");
+    console.log("로딩 State가 렌더링 됨");
     return <div>데이터 로딩중...</div>;
   }
 
