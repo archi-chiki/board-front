@@ -3,15 +3,29 @@ import PostContent from "../components/board/BoardContent";
 import "../styles/board.css";
 import "../styles/common.css";
 import { useBoradFetch } from "../hooks/boardFetch";
+import { ClimbingBoxLoader } from "react-spinners";
+import TestLoading from "./TestLoading";
 
 const BoardPage = () => {
   // 로딩, 에러 상태도 커스텀 훅에서 일괄적으로 관리하는게 바람직한지..?
   const { data, loading, error } = useBoradFetch("board");
 
-  if (loading === true) {
-    console.log("로딩 State가 렌더링 됨");
-    return <div>데이터 로딩중...</div>;
-  }
+  // if (loading === true) {
+  //   console.log("로딩 State가 렌더링 됨");
+  //   return (
+  // <div
+  //   style={{
+  //     width: "100%",
+  //     height: "100%",
+  //     display: "flex",
+  //     alignItems: "center",
+  //     justifyContent: "center",
+  //   }}
+  // >
+  //   <ClimbingBoxLoader color="black" />
+  // </div>
+  //   );
+  // }
 
   if (error === true) {
     return <div>데이터 로딩중 문제가 발생되었음...</div>;
@@ -39,9 +53,11 @@ const BoardPage = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((post) => (
+            {/* {data.map((post) => (
               <PostContent key={post.id} post={post} />
-            ))}
+            ))} */}
+
+            <TestLoading data={data} loading={loading} />
           </tbody>
         </table>
       </section>

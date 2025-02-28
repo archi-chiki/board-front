@@ -28,6 +28,14 @@ export const Layout = ({ children }: Props) => {
       <MainContent>
         <Outlet />
       </MainContent>
+      <div
+        style={{
+          background: "black",
+          height: "80px",
+        }}
+      >
+        페이지숫자들
+      </div>
       <Footer />
     </Container>
   );
