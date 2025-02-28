@@ -15,6 +15,7 @@ export default function TestLoading(props: any) {
             justifyContent: "center",
           }}
         >
+          <div>임시용</div>
           <ClimbingBoxLoader color="black" />
         </td>
       </tr>
