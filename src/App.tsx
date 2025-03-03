@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import "./App.css";
-import { MainPage } from "./pages/MainPage";
 import { Layout } from "./components/common/Layout";
+import MainPage from "./pages/MainPage";
 import BoardPage from "./pages/BoardPage";
-import { WritePage } from "./pages/WritePage";
-import { DetailPage } from "./pages/DetailPage";
-import { VideoPage } from "./pages/VideoPage";
-import { StorePage } from "./pages/StorePage";
-import { Sample } from "./pages/Sample";
+import WritePage from "./pages/WritePage";
+import DetailPage from "./pages/DetailPage";
+import VideoPage from "./pages/VideoPage";
+import StorePage from "./pages/StorePage";
+import Sample from "./pages/Sample";
+import "./App.css";
 
 function App() {
   return (

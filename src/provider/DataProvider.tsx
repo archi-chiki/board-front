@@ -1,5 +1,4 @@
-import { Post } from "../components/board/BoardContent";
-import React, {
+import {
   createContext,
   useState,
   SetStateAction,
@@ -7,6 +6,22 @@ import React, {
   Dispatch,
   PropsWithChildren,
 } from "react";
+
+export interface Post {
+  readonly id: number;
+  readonly subject: string;
+  readonly author: {
+    name: string;
+  };
+  readonly createdAt: string;
+  readonly content: string;
+  views?: number;
+  likes?: number;
+}
+
+export interface PostContentProps {
+  post: Post;
+}
 
 interface DataContextValue {
   readonly data: Post[];

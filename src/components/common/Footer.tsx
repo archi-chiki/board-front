@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 200px;
+  min-height: 100px;
 `;
 
 const Bar = styled.footer`

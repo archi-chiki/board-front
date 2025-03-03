@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Outlet } from "react-router-dom";
+import PageBar from "../board/PagingBar";
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
@@ -28,14 +29,7 @@ export const Layout = ({ children }: Props) => {
       <MainContent>
         <Outlet />
       </MainContent>
-      <div
-        style={{
-          background: "black",
-          height: "80px",
-        }}
-      >
-        페이지숫자들
-      </div>
+      {/* <PageBar /> */}
       <Footer />
     </Container>
   );

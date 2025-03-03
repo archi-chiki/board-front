@@ -1,7 +1,22 @@
+import React, { useState } from "react";
 import { useData } from "../../provider/DataProvider";
 import { useLocation, useParams } from "react-router-dom";
+import { useEdit } from "../../provider/EditProvider";
+import DetailEdit from "./DetailEdit";
+import DetailView from "./DetailView";
+import styled from "@emotion/styled";
+import "../../styles/detail.css";
 
-const DetailTitle = () => {
+const Container = styled.div`
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export default function DetailTitle() {
   // Context를 사용해서 상태를 전달받음
   const { data } = useData();
   const location = useLocation();
@@ -9,15 +24,13 @@ const DetailTitle = () => {
   // 이걸로 state에서 데이터 파싱할거임
   const { postId } = useParams<{ postId: string }>();
   const numericPostId = parseInt(postId || "", 10);
-
-  /*
-    아래와 같이 state로부터 모든 데이터를 전달받아서
-    id와 일치하는 게시글을 find()로 찾아내서 렌더링하는 방식도 문제가 없는지?
-  */
   const post = data.find((item) => item.id === numericPostId);
 
   // 이전에 머물렀던 컴포넌트가 board인지 체크
   const from = location.state?.from || "Unknown";
+
+  // 수정 모드 상태 관리
+  const { isEditing, setIsEditing } = useEdit();
 
   if (from !== "board") {
     return <h1>잘못된 접근입니다.</h1>;
@@ -28,15 +41,15 @@ const DetailTitle = () => {
   }
 
   return (
-    <div className="post">
-      <div className="post-title">{post.subject}</div>
-      <div className="post-info">
-        [작성자] {post.author.name} <br />
-        [작성시간] {new Date(post.createdAt).toLocaleString()}
+    <Container>
+      <div className="post">
+        {!isEditing ? (
+          <DetailView post={post} />
+        ) : (
+          /* 수정 모드일 때 */
+          <DetailEdit post={post} />
+        )}
       </div>
-      <div className="post-content">{post.content}</div>
-    </div>
+    </Container>
   );
-};
-
-export default DetailTitle;
+}

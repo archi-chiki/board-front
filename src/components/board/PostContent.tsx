@@ -1,22 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
+import { PostContentProps } from "../../provider/DataProvider";
 
-export interface Post {
-  readonly id: number;
-  readonly subject: string;
-  readonly author: {
-    name: string;
-  };
-  readonly createdAt: string;
-  readonly content: string;
-  views?: number;
-  likes?: number;
-}
-
-export interface PostContentProps {
-  post: Post;
-}
-
-const PostContent: React.FC<PostContentProps> = ({ post }) => {
+export default function PostContent({ post }: PostContentProps) {
   const navigate = useNavigate();
 
   return (
@@ -37,6 +22,4 @@ const PostContent: React.FC<PostContentProps> = ({ post }) => {
       <td>{post.likes}</td>
     </tr>
   );
-};
-
-export default PostContent;
+}
