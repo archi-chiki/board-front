@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEdit } from "../../provider/EditProvider";
+import apiClient from "../../api/axios-instance";
 import styled from "@emotion/styled";
 
 const Container = styled.div`
@@ -43,41 +44,42 @@ const Content = styled.div`
 
 interface Post {
   post: any;
+  setPost: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function DetailEdit({ post }: Post) {
+export default function DetailEdit({ post, setPost }: Post) {
   const { setIsEditing } = useEdit();
 
   const [editedPost, setEditedPost] = useState({
     id: post?.id || "",
+    name: post?.author.name || "",
+    createdAt: post?.createdAt || "",
     subject: post?.subject || "",
     content: post?.content || "",
   });
 
   const handleSaveClick = async () => {
-    const url = `http://localhost:9000/board/edit/${editedPost.id}`;
+    const url = `board/edit/${editedPost.id}`;
     const requestData = {
       id: editedPost.id,
+      name: post?.author.name || "",
+      createdAt: post?.createdAt || "",
       subject: editedPost.subject,
       content: editedPost.content,
     };
 
     try {
-      const response = await fetch(url, {
-        method: "POST",
+      const response = await apiClient.post(url, requestData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestData),
       });
+      console.log(requestData);
+      console.log("서버 응답 데이터:", response.data);
 
-      if (!response.ok) {
-        throw new Error(`에러임: ${response.status}`);
-      }
+      // 부모 상태 업데이트
+      setPost(response.data);
 
-      const responseData = await response.json();
-
-      console.log("서버 응답 데이터:", responseData);
       setIsEditing(false);
     } catch (error) {
       console.error("게시글 수정 중 오류가 발생됨:", error);
@@ -87,6 +89,8 @@ export default function DetailEdit({ post }: Post) {
   const handleCancelClick = () => {
     setEditedPost({
       id: post?.id || "",
+      name: post?.author.name || "",
+      createdAt: post?.createdAt || "",
       subject: post?.subject || "",
       content: post?.content || "",
     });
