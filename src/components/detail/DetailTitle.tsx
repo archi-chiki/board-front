@@ -18,7 +18,6 @@ const Container = styled.div`
 `;
 
 export default function DetailTitle() {
-  // Context를 사용해서 상태를 전달받음
   const [post, setPost] = useState<string>("");
   const location = useLocation();
 
@@ -44,9 +43,8 @@ export default function DetailTitle() {
           },
         });
 
-        // 배열에서 params와 일치하는 데이터를 파싱하는 부분 수정해야함..
-        const result = await response.data.posts[numericPostId - 1];
-        console.log(result);
+        // 접근하고자 하는 게시글의 ID로 게시물 ID를 찾아서 상태를 업데이트
+        const result = await response.data.posts.find((obj: any) => obj.id === numericPostId);
         setPost(result);
       } catch (error) {
         console.log("Error:", error);

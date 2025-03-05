@@ -1,7 +1,6 @@
 import React from "react";
 
 const BoardHeader = () => {
-  console.log("BoardHeader가 렌더링됨");
   return (
     <thead>
       <tr>
