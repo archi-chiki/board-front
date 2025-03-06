@@ -11,7 +11,7 @@ export const useBoardFetch = (url: string) => {
   const { currentPage } = usePage();
 
   const fetchData = async () => {
-    console.log(currentPage);
+    console.log(`선택한 페이지는 ${currentPage}입니다.`);
     try {
       const response = await apiClient.get(url, {
         params: {

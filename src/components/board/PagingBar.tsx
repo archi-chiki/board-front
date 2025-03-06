@@ -1,4 +1,3 @@
-import { useData } from "../../provider/DataProvider";
 import { usePage } from "../../provider/PageProvider";
 import { useSearchParams } from "react-router-dom";
 import styled from "@emotion/styled";
@@ -49,16 +48,9 @@ export default function PagingBar({ pageCount }: PageCount) {
   const page = searchParams.get("page");
 
   const pageHandler = (page: number) => {
-    setCurrentPage(page);
     setSearchParams({ page: page.toString() });
+    setCurrentPage(page);
   };
-
-  if (page !== null) {
-    const pageNum = parseInt(page, 10);
-    if (!isNaN(pageNum)) {
-      setCurrentPage(pageNum);
-    }
-  }
 
   return (
     <Container>
