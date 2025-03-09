@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DetailTitle from "../components/detail/DetailTitle";
+import DetailBody from "../components/detail/DetailBody";
 
 export default function DetailPage() {
   const [loading] = useState<boolean>(false);
@@ -12,5 +12,5 @@ export default function DetailPage() {
     return <div>에러발생</div>;
   }
 
-  return <DetailTitle />;
+  return <DetailBody />;
 }

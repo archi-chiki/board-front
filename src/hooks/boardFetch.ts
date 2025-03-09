@@ -19,7 +19,7 @@ export const useBoardFetch = (url: string) => {
         },
       });
 
-      setPageCount(response.data.pageInfo.totalPages);
+      setPageCount(response.data.pageInfo);
       setData(response.data.posts);
     } catch (error) {
       if (error) {

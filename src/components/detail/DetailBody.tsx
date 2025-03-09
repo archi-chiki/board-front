@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useEdit } from "../../provider/EditProvider";
-import apiClient from "../../api/axios-instance";
 import { usePage } from "../../provider/PageProvider";
+import apiClient from "../../api/axios-instance";
 import DetailEdit from "./DetailEdit";
 import DetailView from "./DetailView";
 import styled from "@emotion/styled";
@@ -17,7 +17,7 @@ const Container = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-export default function DetailTitle() {
+export default function DetailBody() {
   const [post, setPost] = useState<string>("");
   const location = useLocation();
 
@@ -44,7 +44,7 @@ export default function DetailTitle() {
         });
 
         // 접근하고자 하는 게시글의 ID로 게시물 ID를 찾아서 상태를 업데이트
-        const result = await response.data.posts.find((obj: any) => obj.id === numericPostId);
+        const result = response.data.posts.find((obj: any) => obj.id === numericPostId);
         setPost(result);
       } catch (error) {
         console.log("Error:", error);

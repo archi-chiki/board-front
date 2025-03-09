@@ -6,7 +6,7 @@ import WritePage from "./pages/WritePage";
 import DetailPage from "./pages/DetailPage";
 import VideoPage from "./pages/VideoPage";
 import StorePage from "./pages/StorePage";
-import Sample from "./pages/Sample";
+import Sample from "./pages/SamplePage";
 import "./App.css";
 
 function App() {

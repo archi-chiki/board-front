@@ -38,13 +38,14 @@ const PageButton = styled.button`
   }
 `;
 
-interface PageCount {
-  pageCount: number;
+interface PageInfo {
+  pageInfo: any;
 }
 
-export default function PagingBar({ pageCount }: PageCount) {
+export default function PagingBar({ pageInfo }: PageInfo) {
   const { currentPage, setCurrentPage } = usePage();
   const [searchParams, setSearchParams] = useSearchParams();
+  const totalPages = pageInfo.totalPages;
   const page = searchParams.get("page");
 
   const pageHandler = (page: number) => {
@@ -58,7 +59,7 @@ export default function PagingBar({ pageCount }: PageCount) {
       <PageButton onClick={() => pageHandler(currentPage - 1)} disabled={currentPage === 1}>
         이전
       </PageButton>
-      {Array.from({ length: pageCount }, (_, index) => (
+      {Array.from({ length: totalPages }, (_, index) => (
         /* 페이지 번호 버튼 */
         <PageButton
           key={index}
@@ -69,7 +70,10 @@ export default function PagingBar({ pageCount }: PageCount) {
         </PageButton>
       ))}
       {/* 다음 페이지 버튼 */}
-      <PageButton onClick={() => pageHandler(currentPage + 1)} disabled={currentPage === pageCount}>
+      <PageButton
+        onClick={() => pageHandler(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
         다음
       </PageButton>
     </Container>

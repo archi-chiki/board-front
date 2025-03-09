@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useBoardFetch } from "../hooks/boardFetch";
-import PostContent from "../components/board/PostContent";
+import BoardBody from "../components/board/BoardBody";
 import BoardHeader from "../components/board/BoardHeader";
 import PagingBar from "../components/board/PagingBar";
 import LoadingStatus from "../components/loading/LoadingStatus";
@@ -8,7 +8,7 @@ import "../styles/board.css";
 import "../styles/common.css";
 
 export default function BoardPage() {
-  const { data, pageCount, loading, error } = useBoardFetch("board");
+  const { pageCount, loading, error } = useBoardFetch("board");
 
   if (loading === true) {
     return <LoadingStatus />;
@@ -29,14 +29,10 @@ export default function BoardPage() {
         </div>
         <table className="board-table">
           <BoardHeader />
-          <tbody>
-            {data.map((post: any) => (
-              <PostContent key={post.id} post={post} />
-            ))}
-          </tbody>
+          <BoardBody />
         </table>
       </section>
-      <PagingBar pageCount={pageCount} />
+      <PagingBar pageInfo={pageCount} />
     </div>
   );
 }

@@ -109,6 +109,41 @@ const ModalContainer = styled(Modal)`
   }
 `;
 
+const AttachmentsContainer = styled.div`
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+
+  .attachments-list {
+    list-style: none;
+    padding: 0;
+
+    .attachment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+
+      button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .download-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .remove-btn {
+        background-color: #f44336;
+        color: white;
+      }
+    }
+  }
+`;
+
 interface Post {
   post: any;
 }
@@ -118,9 +153,11 @@ export default function DetailView({ post }: Post) {
   const { setIsEditing } = useEdit();
   const navigate = useNavigate();
 
+  console.log(post);
+
   // 수정하기 버튼 액션
   const handleEditClick = () => {
-    setIsEditing(true); // 수정 모드 활성화
+    setIsEditing(true);
   };
 
   // 삭제하기 버튼 액션
@@ -149,6 +186,40 @@ export default function DetailView({ post }: Post) {
     }
   };
 
+  // 파일 다운로드 핸들러
+  const handleDownload = async (file: any) => {
+    try {
+      const url = `board/download/${file.fileName}`;
+
+      console.log(`다운로드 핸들러 ${file.fileName}`);
+
+      const response = await apiClient.get(url, {
+        responseType: "blob",
+      });
+
+      // Blob 데이터를 기반으로 객체 URL 생성
+      const blob = new Blob([response.data]);
+      const downloadUrl = window.URL.createObjectURL(blob);
+
+      // <a> 태그를 생성해 다운로드 트리거
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+
+      // 파일 이름 설정 (서버에서 Content-Disposition 헤더로 전달된 파일 이름을 사용할 수도 있음)
+      link.setAttribute("download", file.originalName);
+
+      // 링크를 DOM에 추가하고 클릭 이벤트를 발생시킨 뒤 제거
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // 객체 URL 해제
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error("파일 다운로드 중 오류 발생:", error);
+    }
+  };
+
   return (
     <Container>
       <ButtonContainer>
@@ -167,6 +238,27 @@ export default function DetailView({ post }: Post) {
         </div>
         <div className="post-content">{post.content}</div>
       </Content>
+
+      {/* Attachments Section */}
+      <AttachmentsContainer>
+        <h3>첨부파일</h3>
+        {post.files && post.files.length > 0 ? (
+          <ul className="attachments-list">
+            {post.files.map((file: any, index: number) => (
+              <li key={index} className="attachment-item">
+                <span>{file.originalName}</span>
+                <button className="download-btn" onClick={() => handleDownload(file)}>
+                  다운로드
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>첨부된 파일이 없습니다.</p>
+        )}
+      </AttachmentsContainer>
+
+      {/* Modal for Deleting Post */}
       <ModalContainer isOpen={isModalOpen} onRequestClose={closeModal}>
         <h2>게시글 삭제</h2>
         <p>정말로 이 게시글을 삭제하시겠습니까?</p>
