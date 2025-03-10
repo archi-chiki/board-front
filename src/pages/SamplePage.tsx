@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../api/axios-instance";
+import apiClient from "../api/fetch-axios";
 import styled from "@emotion/styled";
 
 const Form = styled.form`

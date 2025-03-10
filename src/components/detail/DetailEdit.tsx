@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEdit } from "../../provider/EditProvider";
-import apiClient from "../../api/axios-instance";
+import apiClient from "../../api/fetch-axios";
 import styled from "@emotion/styled";
 
 const Container = styled.div`

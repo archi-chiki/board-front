@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Modal from "react-modal";
 import styled from "@emotion/styled";
-import apiClient from "../../api/axios-instance";
+import apiClient from "../../api/fetch-axios";
 
 Modal.setAppElement("#root");
 

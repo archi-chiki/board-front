@@ -1,8 +1,9 @@
+import { apiUrl } from "../const/url";
 import axios from "axios";
 
 // Axios 인스턴스 생성
-const apiClient = axios.create({
-  baseURL: "http://localhost:9000", // API의 기본 URL
+const fetchClient = axios.create({
+  baseURL: apiUrl, // API의 기본 URL
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,7 +12,7 @@ const apiClient = axios.create({
 
 // 요청 헤더 커스텀을 위한 인터셉터
 // 이렇게 하는거 맞겠죠 선생님..?
-apiClient.interceptors.request.use(
+fetchClient.interceptors.request.use(
   (config) => {
     config.headers["X-Key"] = "Help me teacher";
     return config;
@@ -21,4 +22,4 @@ apiClient.interceptors.request.use(
   },
 );
 
-export default apiClient;
+export default fetchClient;

@@ -1,6 +1,6 @@
 import { usePage } from "./../provider/PageProvider";
 import { useState, useEffect } from "react";
-import apiClient from "../api/axios-instance";
+import apiClient from "../api/fetch-axios";
 import { useData } from "../provider/DataProvider";
 
 export const useBoardFetch = (url: string) => {

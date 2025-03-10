@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useEdit } from "../../provider/EditProvider";
 import { usePage } from "../../provider/PageProvider";
-import apiClient from "../../api/axios-instance";
+import apiClient from "../../api/fetch-axios";
 import DetailEdit from "./DetailEdit";
 import DetailView from "./DetailView";
 import styled from "@emotion/styled";

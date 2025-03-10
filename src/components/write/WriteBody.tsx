@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import FileUpload from "./FileUpload";
-import apiClient from "../../api/axios-instance";
+import formClient from "../../api/form-axios";
 import styled from "@emotion/styled";
 
 const Form = styled.form`
@@ -35,6 +36,12 @@ const Form = styled.form`
     min-height: 150px;
     line-height: 1.5;
     white-space: pre-wrap; /* 줄바꿈 유지 */
+  }
+
+  p {
+    margin-top: 8px;
+    color: red;
+    font-size: 14px;
   }
 `;
 
@@ -70,46 +77,49 @@ const ButtonContainer = styled.div`
   }
 `;
 
+type FormData = {
+  subject: string;
+  content: string;
+  files: FileList;
+};
+
 export default function WriteBody() {
-  const [subject, setSubject] = useState("");
-  const [content, setContent] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  // 게시글 작성 요청
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  // Form 제출
+  const onSubmit = async (data: FormData) => {
     try {
       const formData = new FormData();
-      formData.append("subject", subject);
-      formData.append("content", content);
-
-      console.log(subject, content, files);
+      formData.append("subject", data.subject);
+      formData.append("content", data.content);
 
       files.forEach((file) => {
         formData.append("files", file);
       });
 
-      const response = await apiClient.post("board/write", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await formClient.post("board/write", formData);
 
       if (response.status === 200) {
-        console.log(response.data.data.files);
-        alert("게시글 작성 성공");
+        console.log(response.data.data);
+        alert("게시글 작성 완료");
         setFiles([]);
         navigate("/board");
       } else {
-        alert("업로드에 실패했습니다.");
+        alert("게시글 작성에 실패하였습니다.");
       }
-    } catch (error) {
-      console.error("업로드 중 오류 발생:", error);
-      alert("업로드 중 오류가 발생했습니다.");
+    } catch (err) {
+      console.error("오류 발생:", err);
+      alert("게시글 작성중 오류가 발생되었습니다.");
     }
   };
 
-  // 취소 버튼
+  // 취소버튼 핸들러
   const handleCancel = () => {
     if (window.confirm("게시글 작성을 취소하시겠습니까?")) {
       navigate("/board");
@@ -117,35 +127,38 @@ export default function WriteBody() {
   };
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      {/* 제목 입력란 */}
       <div>
         <label htmlFor="subject">제목</label>
         <input
           id="subject"
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
           placeholder="제목을 입력하세요"
+          {...register("subject", { required: "제목은 비워둘 수 없습니다." })}
         />
+        {errors.subject && <p>{errors.subject.message}</p>}
       </div>
+
+      {/* 본문 입력란 */}
       <div>
         <label htmlFor="content">내용</label>
         <textarea
           id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
           placeholder="내용을 입력하세요"
+          {...register("content", { required: "본문은 비워둘 수 없습니다." })}
         />
+        {errors.content && <p>{errors.content.message}</p>}
       </div>
 
       {/* 파일 업로드 컴포넌트 */}
       <FileUpload files={files} setFiles={setFiles} />
 
+      {/* 제출 및 취소 */}
       <ButtonContainer>
         <button type="button" className="cancel-btn" onClick={handleCancel}>
           취소
         </button>
-        <button type="submit" className="submit-btn" onClick={handleSubmit}>
+        <button type="submit" className="submit-btn">
           작성하기
         </button>
       </ButtonContainer>
