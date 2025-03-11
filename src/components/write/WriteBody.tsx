@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import FileUpload from "./FileUpload";
@@ -86,11 +86,19 @@ type FormData = {
 export default function WriteBody() {
   const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
+  const subjectInputRef = useRef<HTMLInputElement>(null);
+
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
   } = useForm<FormData>();
+
+  // react-hook-form을 사용할 때, 특정 요소에 focus를 주는 경우
+  useEffect(() => {
+    setFocus("subject");
+  }, []); // 여기에 의존성 배열로 setFocus()를 추가해야 하는 이유는 무엇..?
 
   // Form 제출
   const onSubmit = async (data: FormData) => {
@@ -135,6 +143,11 @@ export default function WriteBody() {
           id="subject"
           placeholder="제목을 입력하세요"
           {...register("subject", { required: "제목은 비워둘 수 없습니다." })}
+          /* react-hook-form을 사용하지 않고, useRef만 사용하는 경우 */
+          // ref={(e) => {
+          //   register("subject").ref(e);
+          //   subjectInputRef.current = e;
+          // }}
         />
         {errors.subject && <p>{errors.subject.message}</p>}
       </div>

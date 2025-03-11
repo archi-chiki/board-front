@@ -4,6 +4,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import styled from "@emotion/styled";
 import apiClient from "../../api/fetch-axios";
+import PolymorphicButton from "../shared/PolymorphicButton";
 
 Modal.setAppElement("#root");
 
@@ -18,7 +19,8 @@ const ButtonContainer = styled.div`
   display: flex;
   gap: 8px;
 
-  button {
+  button,
+  a.edit-btn {
     padding: 8px 12px;
     font-size: 0.9rem;
     border: none;
@@ -223,12 +225,15 @@ export default function DetailView({ post }: Post) {
   return (
     <Container>
       <ButtonContainer>
-        <button className="edit-btn" onClick={handleEditClick}>
+        <PolymorphicButton as="a" className="edit-btn" href="https://google.com">
+          집으로가기
+        </PolymorphicButton>
+        <PolymorphicButton className="edit-btn" onClick={handleEditClick}>
           수정하기
-        </button>
-        <button className="delete-btn" onClick={handleDeleteClick}>
+        </PolymorphicButton>
+        <PolymorphicButton className="delete-btn" onClick={handleDeleteClick}>
           삭제하기
-        </button>
+        </PolymorphicButton>
       </ButtonContainer>
       <Content>
         <div className="post-title">{post.subject}</div>
@@ -247,9 +252,9 @@ export default function DetailView({ post }: Post) {
             {post.files.map((file: any, index: number) => (
               <li key={index} className="attachment-item">
                 <span>{file.originalName}</span>
-                <button className="download-btn" onClick={() => handleDownload(file)}>
+                <PolymorphicButton className="download-btn" onClick={() => handleDownload(file)}>
                   다운로드
-                </button>
+                </PolymorphicButton>
               </li>
             ))}
           </ul>
