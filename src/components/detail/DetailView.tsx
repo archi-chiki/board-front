@@ -155,8 +155,6 @@ export default function DetailView({ post }: Post) {
   const { setIsEditing } = useEdit();
   const navigate = useNavigate();
 
-  console.log(post);
-
   // 수정하기 버튼 액션
   const handleEditClick = () => {
     setIsEditing(true);

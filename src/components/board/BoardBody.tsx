@@ -18,7 +18,7 @@ export default function BoardBody() {
             key={post.id}
             onClick={(e) => {
               // 경로 추적
-              navigate(`/board/${post.id}`, { state: { from: "board" } });
+              navigate(`/board/${post.id}`);
             }}
             style={{
               cursor: "pointer",

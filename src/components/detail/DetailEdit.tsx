@@ -74,7 +74,6 @@ export default function DetailEdit({ post, setPost }: Post) {
           "Content-Type": "application/json",
         },
       });
-      console.log(requestData);
       console.log("서버 응답 데이터:", response.data);
 
       // 부모 상태 업데이트
