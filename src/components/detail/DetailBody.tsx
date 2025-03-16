@@ -7,6 +7,7 @@ import DetailEdit from "./DetailEdit";
 import DetailView from "./DetailView";
 import styled from "@emotion/styled";
 import "../../styles/detail.css";
+import CommentList from "./CommentList";
 
 const Container = styled.div`
   max-width: 800px;
@@ -15,6 +16,8 @@ const Container = styled.div`
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-height: 80vh; /* 화면 높이의 80%까지만 사용 */
+  overflow-y: auto; /* 세로 스크롤 활성화 */
 `;
 
 export default function DetailBody() {
@@ -31,10 +34,10 @@ export default function DetailBody() {
     const fetchPost = async () => {
       try {
         const response = await apiClient.get(`board/${postId}`);
-        console.log(response.data[0]);
+        console.log(response.data);
 
         // 접근하고자 하는 게시글의 ID로 게시물 ID를 찾아서 상태를 업데이트
-        setPost(response.data[0]);
+        setPost(response.data);
       } catch (error) {
         console.log("Error:", error);
       }
@@ -60,6 +63,7 @@ export default function DetailBody() {
           <DetailEdit post={post} setPost={setPost} />
         )}
       </div>
+      <CommentList postId={postId} />
     </Container>
   );
 }

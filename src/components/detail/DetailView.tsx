@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import styled from "@emotion/styled";
 import apiClient from "../../api/fetch-axios";
 import PolymorphicButton from "../shared/PolymorphicButton";
+import CommentList from "./CommentList";
 
 Modal.setAppElement("#root");
 
@@ -13,11 +14,12 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  position: absolute;
+  /* position: absolute; */
   top: 0;
   right: 0;
   display: flex;
   gap: 8px;
+  height: 30px;
 
   button,
   a.edit-btn {
@@ -146,11 +148,7 @@ const AttachmentsContainer = styled.div`
   }
 `;
 
-interface Post {
-  post: any;
-}
-
-export default function DetailView({ post }: Post) {
+export default function DetailView({ post }: any) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { setIsEditing } = useEdit();
   const navigate = useNavigate();
@@ -222,25 +220,33 @@ export default function DetailView({ post }: Post) {
 
   return (
     <Container>
-      <ButtonContainer>
-        <PolymorphicButton as="a" className="edit-btn" href="https://google.com">
-          집으로가기
-        </PolymorphicButton>
-        <PolymorphicButton className="edit-btn" onClick={handleEditClick}>
-          수정하기
-        </PolymorphicButton>
-        <PolymorphicButton className="delete-btn" onClick={handleDeleteClick}>
-          삭제하기
-        </PolymorphicButton>
-      </ButtonContainer>
-      <Content>
-        <div className="post-title">{post.subject}</div>
-        <div className="post-info">
-          [작성자] {post.author.name} <br />
-          [작성시간] {new Date(post.createdAt).toLocaleString()}
-        </div>
-        <div className="post-content">{post.content}</div>
-      </Content>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <Content>
+          <div className="post-title">{post.subject}</div>
+          <div className="post-info">
+            [작성자] {post.author.name} <br />
+            [작성시간] {new Date(post.createdAt).toLocaleString()}
+          </div>
+          <div className="post-content">{post.content}</div>
+        </Content>
+        <ButtonContainer>
+          <PolymorphicButton as="a" className="edit-btn" href="https://google.com">
+            집으로가기
+          </PolymorphicButton>
+          <PolymorphicButton className="edit-btn" onClick={handleEditClick}>
+            수정하기
+          </PolymorphicButton>
+          <PolymorphicButton className="delete-btn" onClick={handleDeleteClick}>
+            삭제하기
+          </PolymorphicButton>
+        </ButtonContainer>
+      </div>
 
       {/* Attachments Section */}
       <AttachmentsContainer>
