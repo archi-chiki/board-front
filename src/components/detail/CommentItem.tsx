@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 
 const CommentBox = styled.div`
@@ -30,10 +30,14 @@ const CommentDate = styled.span`
   color: #888;
 `;
 
-const DeleteButton = styled.button`
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+const Button = styled.button`
   background: none;
   border: none;
-  color: red;
   cursor: pointer;
   font-size: 12px;
   &:hover {
@@ -41,14 +45,52 @@ const DeleteButton = styled.button`
   }
 `;
 
-export default function CommentItem({ comment, onDelete }: any) {
+const Input = styled.textarea`
+  width: 100%;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #333;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export default function CommentItem({ comment, onDelete, onEdit }: any) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(comment.content);
+
+  const handleSave = () => {
+    onEdit(comment.id, editedContent);
+    setIsEditing(false);
+  };
+
   return (
     <CommentBox>
       <CommentHeader>
         <Author>{comment.author.name}</Author>
-        <DeleteButton onClick={() => onDelete(comment.id)}>삭제</DeleteButton>
+        <ButtonGroup>
+          {isEditing ? (
+            <>
+              <Button onClick={handleSave} style={{ color: "green" }}>
+                저장
+              </Button>
+              <Button onClick={() => setIsEditing(false)}>취소</Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={() => setIsEditing(true)}>수정</Button>
+              <Button onClick={() => onDelete(comment.id)} style={{ color: "red" }}>
+                삭제
+              </Button>
+            </>
+          )}
+        </ButtonGroup>
       </CommentHeader>
-      <CommentContent>{comment.content}</CommentContent>
+      {isEditing ? (
+        <Input value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
+      ) : (
+        <CommentContent>{comment.content}</CommentContent>
+      )}
       <CommentDate>{new Date(comment.createdAt).toLocaleString()}</CommentDate>
     </CommentBox>
   );

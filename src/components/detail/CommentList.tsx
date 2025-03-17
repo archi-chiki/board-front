@@ -30,7 +30,7 @@ export default function CommentList({ postId }: any) {
     fetchComments();
   }, [postId]);
 
-  const handleAddComment = (newComment: any) => {
+  const handleAddComment = (newComment: string) => {
     setComments((prev: any) => [newComment, ...prev]);
   };
 
@@ -43,6 +43,23 @@ export default function CommentList({ postId }: any) {
     }
   };
 
+  const handleEditComment = async (commentId: number, newContent: string) => {
+    try {
+      await apiClient.put(`board/comments/${commentId}`, {
+        commentId: commentId,
+        content: newContent,
+      });
+      console.log(newContent);
+      setComments((prev: any) =>
+        prev.map((comment: any) =>
+          comment.id === commentId ? { ...comment, content: newContent } : comment,
+        ),
+      );
+    } catch (error) {
+      console.error("댓글 수정 중 오류 발생:", error);
+    }
+  };
+
   if (loading) return <p>댓글을 불러오는 중...</p>;
 
   return (
@@ -51,7 +68,12 @@ export default function CommentList({ postId }: any) {
       <CommentForm postId={postId} onAddComment={handleAddComment} />
       {comments.length > 0 ? (
         comments.map((comment: any) => (
-          <CommentItem key={comment.id} comment={comment} onDelete={handleDeleteComment} />
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            onDelete={handleDeleteComment}
+            onEdit={handleEditComment}
+          />
         ))
       ) : (
         <NoCommentMessage>댓글이 존재하지 않습니다.</NoCommentMessage>
