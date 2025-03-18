@@ -5,7 +5,6 @@ import Modal from "react-modal";
 import styled from "@emotion/styled";
 import apiClient from "../../api/fetch-axios";
 import PolymorphicButton from "../shared/PolymorphicButton";
-import CommentList from "./CommentList";
 
 Modal.setAppElement("#root");
 
@@ -14,7 +13,6 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  /* position: absolute; */
   top: 0;
   right: 0;
   display: flex;
@@ -61,6 +59,7 @@ const Content = styled.div`
   }
 
   .post-content {
+    color: black;
     font-size: 1rem;
     line-height: 1.5;
     white-space: pre-wrap; /* 줄바꿈 유지 */
@@ -115,7 +114,6 @@ const ModalContainer = styled(Modal)`
 
 const AttachmentsContainer = styled.div`
   margin-top: 20px;
-  padding: 10px;
   border-top: 1px solid #ccc;
 
   .attachments-list {
@@ -236,8 +234,8 @@ export default function DetailView({ post }: any) {
           <div className="post-content">{post.content}</div>
         </Content>
         <ButtonContainer>
-          <PolymorphicButton as="a" className="edit-btn" href="https://google.com">
-            집으로가기
+          <PolymorphicButton as="a" className="edit-btn" href="/board">
+            돌아가기
           </PolymorphicButton>
           <PolymorphicButton className="edit-btn" onClick={handleEditClick}>
             수정하기

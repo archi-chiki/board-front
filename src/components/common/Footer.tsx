@@ -22,19 +22,3 @@ export const Footer = () => {
     </Container>
   );
 };
-
-// import styled from "@emotion/styled";
-
-// const Container = styled.div`
-//   background-color: #333;
-//   color: white;
-//   text-align: center;
-//   padding: 0.8rem;
-//   /* position: fixed; */
-//   bottom: 0;
-//   width: 100vw;
-// `;
-
-// export const Footer = () => {
-//   return <Container>© All rights reserved.</Container>;
-// };

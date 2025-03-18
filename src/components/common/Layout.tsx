@@ -1,36 +1,34 @@
 import styled from "@emotion/styled";
-import { Header } from "./Header";
+import Sidebar from "./Sidebar";
 import { Footer } from "./Footer";
 import { Outlet } from "react-router-dom";
-import PageBar from "../board/PagingBar";
 
 const Container = styled.div`
   font-family: Arial, sans-serif;
   margin: 0;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const MainContent = styled.main`
   flex: 1;
+  margin-left: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 `;
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-export const Layout = ({ children }: Props) => {
+export default function Layout() {
   return (
     <Container>
-      <Header />
+      <Sidebar />
       <MainContent>
         <Outlet />
       </MainContent>
-      {/* <PageBar /> */}
       <Footer />
     </Container>
   );
-};
+}

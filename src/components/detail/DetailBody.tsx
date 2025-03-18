@@ -57,13 +57,15 @@ export default function DetailBody() {
     <Container>
       <div className="post">
         {!isEditing ? (
-          <DetailView post={post} />
+          <>
+            <DetailView post={post} />
+            <CommentList postId={postId} />
+          </>
         ) : (
           /* 수정 모드일 때 */
           <DetailEdit post={post} setPost={setPost} />
         )}
       </div>
-      <CommentList postId={postId} />
     </Container>
   );
 }
