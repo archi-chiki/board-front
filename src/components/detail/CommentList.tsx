@@ -11,33 +11,37 @@ const NoCommentMessage = styled.p`
 `;
 
 export default function CommentList({ postId }: any) {
-  const [comments, setComments] = useState<any | undefined>();
+  const [comments, setComments] = useState<any>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await apiClient.get(`board/${postId}/comments`);
-        console.log(JSON.stringify(response.data));
-        setComments(response.data);
-      } catch (error) {
-        console.error("댓글을 불러오는 중 오류 발생:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchComments();
   }, [postId]);
 
-  const handleAddComment = (newComment: string) => {
-    setComments((prev: any) => [newComment, ...prev]);
+  const fetchComments = async () => {
+    setLoading(true);
+    try {
+      const response = await apiClient.get(`board/${postId}/comments`);
+      setComments(response.data);
+      return response;
+    } catch (error) {
+      console.error("댓글 데이터 패치중 오류 발생:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddComment = async () => {
+    fetchComments();
   };
 
   const handleDeleteComment = async (commentId: number) => {
     try {
-      await apiClient.delete(`board/comments/${commentId}`);
-      setComments((prev: any) => prev.filter((comment: any) => comment.id !== commentId));
+      const response = await apiClient.delete(`board/comments/${commentId}`);
+      if (response.data.status === "success") {
+        alert("댓글 삭제가 완료되었습니다!");
+        fetchComments();
+      }
     } catch (error) {
       console.error("댓글 삭제 중 오류 발생:", error);
     }

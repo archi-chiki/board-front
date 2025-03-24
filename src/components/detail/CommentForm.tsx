@@ -33,7 +33,7 @@ const SubmitButton = styled.button`
 `;
 
 export default function CommentForm({ postId, onAddComment }: any) {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +41,11 @@ export default function CommentForm({ postId, onAddComment }: any) {
 
     try {
       const response = await apiClient.post(`board/${postId}/comments`, { content });
-      onAddComment(response.data);
-      setContent("");
+
+      if (response.data.status === "success") {
+        onAddComment();
+        setContent("");
+      }
     } catch (error) {
       console.error("댓글 추가 중 오류 발생:", error);
     }

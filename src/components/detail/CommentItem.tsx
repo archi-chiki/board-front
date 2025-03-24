@@ -151,7 +151,7 @@ export default function CommentItem({ comment, onDelete, onEdit }: any) {
       )}
       <CommentDate>{new Date(comment.createdAt).toLocaleString()}</CommentDate>
 
-      <ModalContainer isOpen={isModalOpen}>
+      <ModalContainer isOpen={isModalOpen} onRequestClose={closeModal}>
         <h4>댓글을 삭제하시겠습니까?</h4>
         <div className="button-group">
           <PolymorphicButton className="edit-btn" onClick={closeModal}>
