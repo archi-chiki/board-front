@@ -6,6 +6,7 @@ import WritePage from "./pages/WritePage";
 import DetailPage from "./pages/DetailPage";
 import VideoPage from "./pages/VideoPage";
 import StorePage from "./pages/StorePage";
+import LoginPage from "./pages/LoginPage";
 import Sample from "./pages/SamplePage";
 import "./App.css";
 
@@ -15,7 +16,8 @@ function App() {
       {/* Layout을 부모 라우트로 설정 */}
       <Route path="/" element={<Layout />}>
         {/* 자식 라우트 정의 */}
-        <Route index element={<MainPage />} /> {/* 기본 경로 */}
+        <Route index element={<LoginPage />} />
+        <Route path="main" element={<MainPage />} />
         <Route path="board/:postId" element={<DetailPage />} />
         <Route path="board/write" element={<WritePage />} />
         <Route path="board" element={<BoardPage />} />

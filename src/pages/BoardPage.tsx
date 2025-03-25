@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useBoardFetch } from "../hooks/boardFetch";
+import { useBoardFetch } from "../hooks/useBoardFetch";
 import BoardBody from "../components/board/BoardBody";
 import BoardHeader from "../components/board/BoardHeader";
 import PagingBar from "../components/board/PagingBar";

@@ -86,12 +86,13 @@ type FormData = {
 export default function WriteBody() {
   const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
-  const subjectInputRef = useRef<HTMLInputElement>(null);
+  // const subjectInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
     handleSubmit,
     setFocus,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -117,6 +118,7 @@ export default function WriteBody() {
         console.log(response.data.data);
         alert("게시글 작성 완료");
         setFiles([]);
+        reset();
         navigate("/board");
       } else {
         alert("게시글 작성에 실패하였습니다.");

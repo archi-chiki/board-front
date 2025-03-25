@@ -1,7 +1,7 @@
 import { usePage } from "./../provider/PageProvider";
 import { useState, useEffect } from "react";
-import apiClient from "../api/fetch-axios";
 import { useData } from "../provider/DataProvider";
+import apiClient from "../api/fetch-axios";
 
 export const useBoardFetch = (url: string) => {
   const [loading, setLoading] = useState<boolean>(true);

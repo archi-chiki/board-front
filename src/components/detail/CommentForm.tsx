@@ -1,4 +1,5 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "@emotion/styled";
 import apiClient from "../../api/fetch-axios";
 
@@ -33,18 +34,27 @@ const SubmitButton = styled.button`
 `;
 
 export default function CommentForm({ postId, onAddComment }: any) {
-  const [content, setContent] = useState<string>("");
+  // const [content, setContent] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<{ content: string }>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!content.trim()) return;
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!content.trim()) return;
+  const onSubmit = async (data: { content: string }) => {
+    if (!data.content.trim()) return;
 
     try {
-      const response = await apiClient.post(`board/${postId}/comments`, { content });
+      const response = await apiClient.post(`board/${postId}/comments`, { content: data.content });
 
-      if (response.data.status === "success") {
+      if (response.status === 200) {
         onAddComment();
-        setContent("");
+        // setContent("");
+        reset();
       }
     } catch (error) {
       console.error("댓글 추가 중 오류 발생:", error);
@@ -52,12 +62,14 @@ export default function CommentForm({ postId, onAddComment }: any) {
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={handleSubmit(onSubmit)}>
       <StyledTextarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        // value={content}
+        // onChange={(e) => setContent(e.target.value)}
+        {...register("content", { required: "댓글 본문은 비어있을 수 없습니다." })}
         placeholder="댓글을 입력하세요..."
       />
+      {errors.content && <p style={{ color: "red", fontSize: "12px" }}>{errors.content.message}</p>}
       <SubmitButton type="submit">댓글 작성</SubmitButton>
     </FormContainer>
   );
