@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
+import { toast } from "react-toastify";
 import styled from "@emotion/styled";
 import formClient from "../../api/form-axios";
 
@@ -47,7 +49,7 @@ export default function LoginForm() {
     setFocus,
     reset,
     formState: { errors },
-  } = useForm<LoginFormProps>();
+  } = useForm<LoginFormProps>(); // 여기에 Yup 또는 유효성 검사 가능한 라이브러리를 통해 유효성 검사를 하는 로직추가
 
   const navigate = useNavigate();
 
@@ -59,12 +61,26 @@ export default function LoginForm() {
     try {
       const response = await formClient.post("auth", data);
       console.log("서버 응답:", response);
-
-      if (response.status === 200 && response.data.message === "success") {
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
         navigate("/board");
       }
     } catch (error) {
-      console.error("에러 발생:", error);
+      if (isAxiosError(error)) {
+        console.error("Axios Error: ", error.message);
+        if (error.response) {
+          const status = error.response.status;
+          if (status === 400) {
+            toast.error("아이디가 존재하지 않습니다.");
+          } else if (status === 401) {
+            toast.error("비밀번호가 잘못되었습니다.");
+          } else {
+            toast.error("로그인 중 오류가 발생되었습니다.");
+          }
+        }
+      } else {
+        console.error("알 수 없는 에러: ", error);
+      }
     }
   };
 
@@ -78,6 +94,7 @@ export default function LoginForm() {
         type="password"
         {...register("password", { required: true })}
       />
+      {errors["password"] && <span>{errors["password"].message}</span>}
       <Button type="submit">로그인</Button>
     </Container>
   );
